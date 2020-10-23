@@ -15,4 +15,5 @@
 # vendor/
 
 /geld
+/db
 .DS_Store
