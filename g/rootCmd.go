@@ -8,6 +8,12 @@ import (
 
 var database *Database
 
+var category string
+var txType string
+
+var since string
+var until string
+
 var format string
 
 const(
