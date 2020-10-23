@@ -51,7 +51,11 @@ var listCmd = &cobra.Command{
 
     totalAmount := decimal.NewFromInt(0);
     for _, transaction := range filteredTransactions {
-      totalAmount = totalAmount.Add(transaction.GetValueDecimal())
+      if transaction.Type == TX_TYPE_IN {
+        totalAmount = totalAmount.Add(transaction.GetValueDecimal())
+      } else if transaction.Type == TX_TYPE_OUT {
+        totalAmount = totalAmount.Sub(transaction.GetValueDecimal())
+      }
       fmt.Printf("%s\n", transaction.GetOutput(false))
     }
 
