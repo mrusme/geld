@@ -86,6 +86,15 @@ func (transaction *Transaction) GetValueDecimal() (decimal.Decimal) {
 
   return dec
 }
+
+func (transaction *Transaction) GetTypeVerb() (string) {
+  switch(transaction.Type) {
+  case TX_TYPE_IN: return "received"
+  case TX_TYPE_OUT: return "spent"
+  default: return "???"
+  }
+}
+
 func (transaction *Transaction) GetOutput(full bool) (string) {
   var output string = ""
 
