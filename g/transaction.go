@@ -21,6 +21,11 @@ type Transaction struct {
   SHA1           string      `json:"-"`
 }
 
+const(
+  TX_TYPE_IN  = "in"
+  TX_TYPE_OUT = "out"
+)
+
 func NewTransaction(
   id string,
   typ string,

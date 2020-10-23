@@ -22,10 +22,10 @@ func GetTransactionsFromRevolutCSV(user string, file string) ([]Transaction, err
       var rtxType string
       var rtxPaid string
       if rtx.PaidIn == "" && rtx.PaidOut != "" {
-        rtxType = "OUT"
+        rtxType = TX_TYPE_OUT
         rtxPaid = rtx.PaidOut
       } else if rtx.PaidIn != "" && rtx.PaidOut == "" {
-        rtxType = "IN"
+        rtxType = TX_TYPE_IN
         rtxPaid = rtx.PaidIn
       }
 
