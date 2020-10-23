@@ -78,6 +78,14 @@ func (transaction *Transaction) SetIDFromDatabaseKey(key string) (error) {
   return nil
 }
 
+func (transaction *Transaction) GetValueDecimal() (decimal.Decimal) {
+  dec, err := decimal.NewFromString(transaction.Value)
+  if err != nil {
+    return decimal.NewFromInt(0)
+  }
+
+  return dec
+}
 func (transaction *Transaction) GetOutput(full bool) (string) {
   var output string = ""
 
