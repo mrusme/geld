@@ -21,3 +21,61 @@ the version in `geld --help` to be a different one.
 
 Please make sure to `export GELD_DB=~/.config/geld.db` (or whatever location 
 you would like to have the geld database at).
+
+
+### List transactions
+
+```sh
+geld list --help
+```
+
+#### Examples:
+
+List all transactions:
+
+```sh
+geld list
+```
+
+List all transactions since a specific date:
+
+```sh
+geld list --since "Oct 2, 2020"
+```
+
+List all transactions and add the total amount:
+
+```sh
+geld list --total
+```
+
+
+### Import transactions
+
+During import, *geld* will create SHA1 sums for every transaction, which allows 
+it to identify every imported transaction. This way *geld* won't import the 
+exact same transaction twice. This means that if you import periodical exports 
+that might contain duplicate transactions you don't need to worry about them 
+messing up your database.
+
+```sh
+geld import --help
+```
+
+The following formats are supported as of right now:
+
+#### `revolut`: Revolut CSV
+
+It is possible to import CSV exports from [Revolut](https://revolut.com). To
+export a CSV, open the Revolut iOS or Android app, select your account, click
+the `...` button (right next to the `+ Add money` and `-> Send` buttons),
+choose `Statement` from the popup menu and select `Excel` on the top of the
+statement screen.
+
+#### Examples:
+
+Import a Revolut CSV export:
+
+```sh
+geld import --format revolut ./revolut.csv
+```
