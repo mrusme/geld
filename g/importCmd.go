@@ -65,8 +65,8 @@ func GetTransactionsFromRevolutCSV(user string, file string) ([]Transaction, err
 
 var importCmd = &cobra.Command{
   Use:   "import ([flags]) [file]",
-  Short: "Import tracked activities",
-  Long: "Import tracked activities from various formats.",
+  Short: "Import transactions",
+  Long: "Import transactions from various formats.",
   Args: cobra.ExactArgs(1),
   Run: func(cmd *cobra.Command, args []string) {
     var transactions []Transaction
