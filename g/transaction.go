@@ -38,8 +38,8 @@ func NewTransaction(
   newTransaction := Transaction{}
 
   newTransaction.ID = id
-  newTransaction.Type = GetIdFromName(typ)
-  newTransaction.Category = GetIdFromName(category)
+  newTransaction.Type = typ
+  newTransaction.Category = category
 
   if date == "" {
     newTransaction.Date = time.Now()
