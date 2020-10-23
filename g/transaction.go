@@ -4,6 +4,9 @@ import (
   "errors"
   "strings"
   "time"
+  "fmt"
+  "github.com/gookit/color"
+  "github.com/shopspring/decimal"
 )
 
 type Transaction struct {
@@ -98,7 +101,10 @@ func (transaction *Transaction) GetTypeVerb() (string) {
 func (transaction *Transaction) GetOutput(full bool) (string) {
   var output string = ""
 
-  // TODO
+  if full == false {
+    output = fmt.Sprintf("%s %s %s for %s on %s", color.FgGray.Render(transaction.ID), transaction.GetTypeVerb(), color.FgLightWhite.Render(transaction.Value), color.FgLightWhite.Render(transaction.Category), color.FgLightWhite.Render(transaction.Date.Format("2006-01-02")) )
+  } else {
+  }
 
   return output
 }
