@@ -19,6 +19,7 @@ type Transaction struct {
   ValueExchanged string      `json:"valueExchanged,omitempty"`
   ExchangeRate   string      `json:"exchangeRate,omitempty"`
   Reference      string      `json:"reference,omitempty"`
+  SenderReceiver string      `json:"senderReceiver,omitempty"`
   User           string      `json:"user,omitempty"`
 
   SHA1           string      `json:"-"`
@@ -34,7 +35,9 @@ func NewTransaction(
   typ string,
   category string,
   date string,
+  dateFormat string,
   value string,
+  decimalSeparator rune,
   user string) (Transaction, error) {
   var err error
 
@@ -48,7 +51,7 @@ func NewTransaction(
     newTransaction.Date = time.Now()
   } else {
     // TODO: Implement parsing that recognizes different formats
-    newTransaction.Date, err = time.Parse("Jan 2, 2006", date)
+    newTransaction.Date, err = time.Parse(dateFormat, date)
     if err != nil {
       return newTransaction, err
     }
@@ -56,7 +59,7 @@ func NewTransaction(
 
   newTransaction.DateValue = newTransaction.Date
 
-  dec, err := GetDecimalFromValueString(value)
+  dec, err := GetDecimalFromValueString(value, decimalSeparator)
   if err != nil {
     return newTransaction, err
   }
@@ -105,11 +108,19 @@ func (transaction *Transaction) GetTypeVerb() (string) {
   }
 }
 
+func (transaction *Transaction) GetCategory() (string) {
+  if transaction.Category == "" {
+    return "something"
+  }
+
+  return transaction.Category
+}
+
 func (transaction *Transaction) GetOutput(full bool) (string) {
   var output string = ""
 
   if full == false {
-    output = fmt.Sprintf("%s %s %s for %s on %s", color.FgGray.Render(transaction.ID), transaction.GetTypeVerb(), color.FgLightWhite.Render(transaction.Value), color.FgLightWhite.Render(transaction.Category), color.FgLightWhite.Render(transaction.Date.Format("2006-01-02")) )
+    output = fmt.Sprintf("%s %s %s for %s on %s", color.FgGray.Render(transaction.ID), transaction.GetTypeVerb(), color.FgLightWhite.Render(transaction.Value), color.FgLightWhite.Render(transaction.GetCategory()), color.FgLightWhite.Render(transaction.Date.Format("2006-01-02")) )
   } else {
   }
 

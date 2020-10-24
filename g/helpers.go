@@ -28,16 +28,21 @@ func GetIdFromName(name string) string {
   return id
 }
 
-func GetDecimalFromValueString(value string) (decimal.Decimal, error) {
+func GetDecimalFromValueString(value string, decimalSeparator rune) (decimal.Decimal, error) {
   var regEx *regexp.Regexp
   var dec decimal.Decimal
   var err error
 
-  regEx = regexp.MustCompile("[^\\d.]")
-  dec, err = decimal.NewFromFormattedString(value, regEx)
-  if err == nil {
-    return dec, nil
+  fixedValue := value
+  if decimalSeparator == ',' {
+    fixedValue = strings.Replace(fixedValue, ".", "", -1)
+    fixedValue = strings.Replace(fixedValue, ",", ".", -1)
   }
 
+  regEx = regexp.MustCompile("[^\\d.]")
+  dec, err = decimal.NewFromFormattedString(fixedValue, regEx)
+  if err != nil {
+    return dec, nil
+  }
   return dec, err
 }
