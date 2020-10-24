@@ -64,6 +64,28 @@ geld import --help
 
 The following formats are supported as of right now:
 
+
+#### `csv`: Generic CSV
+
+It is possible to import generic CSV exports by specifying in which columns
+`geld` can find individual properties.
+
+#### Examples:
+
+Import a generic CSV export:
+
+```sh
+geld import --format csv ./generic.csv \
+  --csv-col-date 1 \
+  --csv-col-value 8 \
+  --csv-col-reference 5 \
+  --csv-col-sender-receiver 3 \
+  --csv-format-date "2.1.2006" \
+  --csv-delimiter ";" \
+  --csv-value-decimal-separator ","
+```
+
+
 #### `revolut`: Revolut CSV
 
 It is possible to import CSV exports from [Revolut](https://revolut.com). To
