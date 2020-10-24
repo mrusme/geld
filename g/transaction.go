@@ -61,6 +61,13 @@ func NewTransaction(
     return newTransaction, err
   }
 
+  if dec.IsNegative() {
+    newTransaction.Type = TX_TYPE_OUT
+    dec = dec.Mul(decimal.NewFromInt(-1))
+  } else if newTransaction.Type == "" {
+    newTransaction.Type = TX_TYPE_IN
+  }
+
   newTransaction.Value = dec.StringFixedBank(2)
   newTransaction.ValueExchanged = ""
   newTransaction.ExchangeRate = ""
