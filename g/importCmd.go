@@ -9,58 +9,58 @@ import (
 )
 
 func GetTransactionsFromRevolutCSV(user string, file string) ([]Transaction, error) {
-    var transactions []Transaction
+  var transactions []Transaction
 
-    rtxes, err := ImportRevolutCSV(file)
-    if err != nil {
-      return transactions, err
+  rtxes, err := ImportRevolutCSV(file)
+  if err != nil {
+    return transactions, err
+  }
+
+  for _, rtx := range rtxes {
+    transactionSHA1 := structhash.Sha1(rtx, 1)
+
+    var rtxType string
+    var rtxPaid string
+    if rtx.PaidIn == "" && rtx.PaidOut != "" {
+      rtxType = TX_TYPE_OUT
+      rtxPaid = rtx.PaidOut
+    } else if rtx.PaidIn != "" && rtx.PaidOut == "" {
+      rtxType = TX_TYPE_IN
+      rtxPaid = rtx.PaidIn
     }
 
-    for _, rtx := range rtxes {
-      transactionSHA1 := structhash.Sha1(rtx, 1)
+    transaction, err := NewTransaction("", rtxType, rtx.Category, rtx.CompletedDate, rtxPaid, user)
+    if err != nil {
+      fmt.Printf("%s %+v\n", CharError, err)
+      continue
+    }
 
-      var rtxType string
-      var rtxPaid string
-      if rtx.PaidIn == "" && rtx.PaidOut != "" {
-        rtxType = TX_TYPE_OUT
-        rtxPaid = rtx.PaidOut
-      } else if rtx.PaidIn != "" && rtx.PaidOut == "" {
-        rtxType = TX_TYPE_IN
-        rtxPaid = rtx.PaidIn
-      }
+    var rtxExchange *string = nil
+    if rtx.ExchangeIn == "" && rtx.ExchangeOut != "" {
+      rtxExchange = &rtx.ExchangeOut
+    } else if rtx.ExchangeIn != "" && rtx.ExchangeOut == "" {
+      rtxExchange = &rtx.ExchangeIn
+    }
 
-      transaction, err := NewTransaction("", rtxType, rtx.Category, rtx.CompletedDate, rtxPaid, user)
+    if rtxExchange != nil {
+      rtxValueExchanged, err := GetDecimalFromValueString(*rtxExchange)
       if err != nil {
         fmt.Printf("%s %+v\n", CharError, err)
         continue
       }
 
-      var rtxExchange *string = nil
-      if rtx.ExchangeIn == "" && rtx.ExchangeOut != "" {
-        rtxExchange = &rtx.ExchangeOut
-      } else if rtx.ExchangeIn != "" && rtx.ExchangeOut == "" {
-        rtxExchange = &rtx.ExchangeIn
-      }
-
-      if rtxExchange != nil {
-        rtxValueExchanged, err := GetDecimalFromValueString(*rtxExchange)
-        if err != nil {
-          fmt.Printf("%s %+v\n", CharError, err)
-          continue
-        }
-
-        transaction.ValueExchanged = rtxValueExchanged.StringFixedBank(2)
-        transaction.ExchangeRate = rtx.ExchangeRate
-      }
-
-      transaction.Reference = rtx.Reference
-
-      transaction.SHA1 = fmt.Sprintf("%x", transactionSHA1)
-
-      transactions = append(transactions, transaction)
+      transaction.ValueExchanged = rtxValueExchanged.StringFixedBank(2)
+      transaction.ExchangeRate = rtx.ExchangeRate
     }
 
-    return transactions, nil
+    transaction.Reference = rtx.Reference
+
+    transaction.SHA1 = fmt.Sprintf("%x", transactionSHA1)
+
+    transactions = append(transactions, transaction)
+  }
+
+  return transactions, nil
 }
 
 var importCmd = &cobra.Command{
