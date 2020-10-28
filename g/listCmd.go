@@ -43,7 +43,7 @@ var listCmd = &cobra.Command{
     }
 
     var filteredTransactions []Transaction
-    filteredTransactions, err = GetFilteredTransactions(transactions, txType, category, sinceTime, untilTime)
+    filteredTransactions, err = GetFilteredTransactions(transactions, txType, txCategory, sinceTime, untilTime)
     if err != nil {
       fmt.Printf("%s %+v\n", CharError, err)
       os.Exit(1)
@@ -71,7 +71,7 @@ func init() {
   listCmd.Flags().StringVar(&since, "since", "", "Date to start the list from, e.g. 'Oct 1, 2019'")
   listCmd.Flags().StringVar(&until, "until", "", "Date to list until, e.g. 'Nov 15, 2019'")
   listCmd.Flags().StringVarP(&txType, "type", "t", "", "Type to be listed, possible values: in, out")
-  listCmd.Flags().StringVarP(&category, "category", "c", "", "Category to be listed")
+  listCmd.Flags().StringVarP(&txCategory, "category", "c", "", "Category to be listed")
   listCmd.Flags().BoolVar(&listTotalAmount, "total", false, "Show total amount for listed transactions")
 
   var err error

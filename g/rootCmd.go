@@ -8,8 +8,12 @@ import (
 
 var database *Database
 
-var category string
 var txType string
+var txCategory string
+var txDate string
+var txValue string
+var txReference string
+var txSenderReceiver string
 
 var since string
 var until string
