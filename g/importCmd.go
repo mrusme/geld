@@ -139,8 +139,6 @@ var importCmd = &cobra.Command{
     var transactions []Transaction
     var err error
 
-    user := GetCurrentUser()
-
     switch(format) {
     case "geld":
       // TODO:
@@ -156,13 +154,13 @@ var importCmd = &cobra.Command{
       mapping["reference"] = csvColReference
       mapping["senderReceiver"] = csvColSenderReceiver
 
-      transactions, err = GetTransactionsFromCSV(user, args[0], mapping)
+      transactions, err = GetTransactionsFromCSV(txUser, args[0], mapping)
       if err != nil {
         fmt.Printf("%s %+v\n", CharError, err)
         os.Exit(1)
       }
     case "revolut":
-      transactions, err = GetTransactionsFromRevolutCSV(user, args[0])
+      transactions, err = GetTransactionsFromRevolutCSV(txUser, args[0])
       if err != nil {
         fmt.Printf("%s %+v\n", CharError, err)
         os.Exit(1)
@@ -172,7 +170,7 @@ var importCmd = &cobra.Command{
       os.Exit(1)
     }
 
-    sha1List, sha1Err := database.GetImportsSHA1List(user)
+    sha1List, sha1Err := database.GetImportsSHA1List(txUser)
     if sha1Err != nil {
         fmt.Printf("%s %+v\n", CharError, sha1Err)
         os.Exit(1)
@@ -184,7 +182,7 @@ var importCmd = &cobra.Command{
         continue
       }
 
-      importedId, err := database.AddTransaction(user, transaction)
+      importedId, err := database.AddTransaction(txUser, transaction)
       if err != nil {
         fmt.Printf("%s %s could not be imported: %+v\n", CharError, color.FgLightWhite.Render(transaction.SHA1), color.FgRed.Render(err))
         continue
@@ -194,7 +192,7 @@ var importCmd = &cobra.Command{
       sha1List[transaction.SHA1] = importedId
     }
 
-    err = database.UpdateImportsSHA1List(user, sha1List)
+    err = database.UpdateImportsSHA1List(txUser, sha1List)
     if err != nil {
         fmt.Printf("%s %+v\n", CharError, err)
         os.Exit(1)

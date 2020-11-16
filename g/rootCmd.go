@@ -8,6 +8,7 @@ import (
 
 var database *Database
 
+var txUser string
 var txType string
 var txCategory string
 var txDate string
@@ -44,6 +45,7 @@ func Execute() {
 
 func init() {
   cobra.OnInitialize(initConfig)
+  rootCmd.PersistentFlags().StringVarP(&txUser, "user", "u", GetCurrentUser(), "User to act on behalf of, defaults to system user name")
 }
 
 func initConfig() {

@@ -15,9 +15,7 @@ var listCmd = &cobra.Command{
   Short: "List transactions",
   Long: "List all tracked transactions.",
   Run: func(cmd *cobra.Command, args []string) {
-    user := GetCurrentUser()
-
-    transactions, err := database.ListTransactions(user)
+    transactions, err := database.ListTransactions(txUser)
     if err != nil {
       fmt.Printf("%s %+v\n", CharError, err)
       os.Exit(1)

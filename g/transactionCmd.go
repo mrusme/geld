@@ -14,10 +14,9 @@ var transactionCmd = &cobra.Command{
   Long: "Display or update tracked transaction.",
   Args: cobra.ExactArgs(1),
   Run: func(cmd *cobra.Command, args []string) {
-    user := GetCurrentUser()
     id := args[0]
 
-    transaction, err := database.GetTransaction(user, id)
+    transaction, err := database.GetTransaction(txUser, id)
     if err != nil {
       fmt.Printf("%s %+v\n", CharError, err)
       os.Exit(1)
@@ -51,7 +50,7 @@ var transactionCmd = &cobra.Command{
           "",
           txValue,
           '.',
-          user)
+          txUser)
         if err != nil {
           fmt.Printf("%s %+v\n", CharError, err)
           os.Exit(1)
@@ -68,7 +67,7 @@ var transactionCmd = &cobra.Command{
         transaction.SenderReceiver = txSenderReceiver
       }
 
-      _, err = database.UpdateTransaction(user, transaction)
+      _, err = database.UpdateTransaction(txUser, transaction)
       if err != nil {
         fmt.Printf("%s %+v\n", CharError, err)
         os.Exit(1)

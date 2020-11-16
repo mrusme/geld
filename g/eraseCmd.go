@@ -13,10 +13,9 @@ var eraseCmd = &cobra.Command{
   Long: "Erase tracked transaction.",
   Args: cobra.ExactArgs(1),
   Run: func(cmd *cobra.Command, args []string) {
-    user := GetCurrentUser()
     id := args[0]
 
-    err := database.EraseTransaction(user, id)
+    err := database.EraseTransaction(txUser, id)
     if err != nil {
       fmt.Printf("%s %+v\n", CharError, err)
       os.Exit(1)
