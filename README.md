@@ -1,5 +1,7 @@
+geld
+----
+
 ![geld](documentation/geld.png)
--------------------------------
 
 Geld, zählen. A command line tool for tracking money & budgets.
 
