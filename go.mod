@@ -5,10 +5,10 @@ go 1.18
 require (
 	github.com/cnf/structhash v0.0.0-20201127153200-e1b16c1ebc08
 	github.com/google/uuid v1.3.0
-	github.com/gookit/color v1.5.2
+	github.com/gookit/color v1.5.4
 	github.com/shopspring/decimal v1.3.1
-	github.com/spf13/cobra v1.6.1
-	github.com/tidwall/buntdb v1.2.10
+	github.com/spf13/cobra v1.7.0
+	github.com/tidwall/buntdb v1.3.0
 )
 
 require (
@@ -40,6 +40,6 @@ require (
 	github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	go.etcd.io/bbolt v1.3.2 // indirect
-	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/sys v0.10.0 // indirect
 	gopkg.in/resty.v1 v1.12.0 // indirect
 )
